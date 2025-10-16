@@ -49,3 +49,24 @@ jobs:
         tags: |
           ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo:latest
           ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo:${{ github.sha }}
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: docker-build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    
+    steps:
+    - name: Send Telegram notification
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        message: |
+          🚀 Новый релиз приложения!
+          
+          📦 Репозиторий: ${{ github.repository }}
+          🔥 Коммит: ${{ github.sha }}
+          👤 Автор: ${{ github.actor }}
+          
+          📎 Ссылка: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          🐳 Docker: ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo:latest

@@ -27,4 +27,9 @@ public class DemoApplication {
     public String info() {
         return "Spring Boot CI/CD Demo Application";
     }
+
+    @GetMapping("/version")
+    public String version() {
+        return "Current version: 1.0.0";
+    }
 }

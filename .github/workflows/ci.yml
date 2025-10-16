@@ -46,9 +46,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo:${{ github.sha }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo:latest
 
   notify:
     runs-on: ubuntu-latest
@@ -63,10 +61,5 @@ jobs:
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         message: |
           🚀 Новый релиз приложения!
-          
-          📦 Репозиторий: ${{ github.repository }}
-          🔥 Коммит: ${{ github.sha }}
-          👤 Автор: ${{ github.actor }}
-          
-          📎 Ссылка: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          🐳 Docker: ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo:latest
+          Репозиторий: ${{ github.repository }}
+          Коммит: ${{ github.sha }}
